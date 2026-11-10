@@ -1,0 +1,28 @@
+[project]
+name = "coralgen"
+version = "0.1.0"
+description = "Grows printable, support-free coral onto an existing 3D-printable part"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "zajca" }]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.2",
+    "scipy>=1.15",
+    "scikit-image>=0.25",
+    "trimesh>=4.6",
+    "manifold3d>=3.1",
+    "lxml>=5.3",
+    "networkx>=3.4",
+]
+
+[project.scripts]
+coralgen = "coralgen.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/coralgen"]

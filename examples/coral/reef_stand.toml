@@ -1,0 +1,88 @@
+# coralgen run: coral growing from the reef stand plateau around the CoralWatch case.
+# Frame: stand frame of examples/coral/reef_stand.scad (bed z = 0, plateau and case bottom at z = 12).
+# Regenerate the inputs after any stand or case change:
+#   openscad -o examples/stl/reef_stand_stand.stl   -D 'part="stand"'   examples/coral/reef_stand.scad
+#   openscad -o examples/stl/reef_stand_keepout.stl -D 'part="keepout"' examples/coral/reef_stand.scad
+
+part = []   # the whole result is one printed piece
+
+[host]
+stl = "../stl/reef_stand_stand.stl"
+cut_stl = ""
+keepout_stl = "../stl/reef_stand_keepout.stl"
+
+[seed]
+count = 9
+min_spacing = 16.0
+z_min = 11.9           # plateau top (stand_h = 12); the chamfer faces are excluded by min_normal_z
+z_max = 12.1
+min_normal_z = 0.95    # upward faces only
+root_embed = 0.5
+surface_samples = 30000
+max_hull_depth = 0.5
+
+[envelope]
+spread = 48.0          # attractors at most this far from the stand, i.e. this high above the plateau
+height_above_top = 45.0
+shape = "branching"
+attractor_count = 3000
+xy_margin = 0.0        # coral stays over the plateau, so the print footprint is the stand's
+host_clearance = 4.5   # radius.max + growth.branch_gap
+keepout_margin = 3.0   # radius.max
+field_voxel = 0.5
+
+[branching]
+trunk_length = 12.0
+length_ratio = 0.8
+max_forks = 4
+fork_angle_min_deg = 22.0
+fork_angle_max_deg = 40.0
+wander_deg = 4.0
+fork_twist_deg = 0.0
+azimuth_jitter_deg = 20.0
+
+[crawl]
+surface_samples = 120000
+attractor_count = 2500
+center_height_ratio = 0.4
+snap_limit_ratio = 0.8
+smooth_iterations = 4
+polyp_probability = 0.12
+polyp_length_min = 2.0
+polyp_length_max = 4.5
+
+[growth]
+step = 1.5
+influence = 9.0
+kill = 4.5
+max_tilt_deg = 40.0      # MINI+ IS profile: 50 deg wedges slice without support; 40 keeps a 10 deg margin
+inertia = 0.6
+upward_bias = 0.25
+max_iterations = 400
+min_twig_nodes = 3
+branch_gap = 1.5
+random_seed = 1
+
+[radius]
+tip = 1.8
+max = 3.0
+pipe_exponent = 2.4
+
+[mesh]
+voxel = 0.25
+taubin_iterations = 20
+preview_sides = 6
+
+[verify]
+vendor_bundle = "~/.config/PrusaSlicer/vendor/PrusaResearch.ini"
+printer_preset = "Original Prusa MINI & MINI+ Input Shaper"
+print_preset = "0.20mm SPEED @MINIIS 0.4"
+filament_preset = "Prusament PLA @MINIIS"
+support_threshold = 0.0   # PrusaSlicer automatic detection (from extrusion width), not the preset's 55
+tolerance = 3.0
+z_window = 0.6
+max_attempts = 8
+
+[output]
+dir = "out"
+name = "reef_stand_coral"
